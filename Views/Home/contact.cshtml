@@ -1,0 +1,87 @@
+﻿@model ContactUs
+
+<section>
+  <div class="container">
+    <h1>اتصل بنا</h1>
+    <p class="mb-0">يسعدنا سماع آرائكم واقتراحاتكم</p>
+  </div>
+</section>
+
+<main class="container py-5">
+
+  <!-- إظهار رسالة النجاح بعد الحفظ -->
+  @if (TempData["SuccessMessage"] != null)
+  {
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          @TempData["SuccessMessage"]
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+  }
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="panel h-100">
+        <h4 class="mb-4">معلومات التواصل</h4>
+        <div class="info-item">
+          <i class="bi bi-geo-alt"></i>
+          <div><strong>العنوان</strong><br>12 شارع التحرير، القاهرة، مصر</div>
+        </div>
+        <div class="info-item">
+          <i class="bi bi-telephone"></i>
+          <div><strong>الهاتف</strong><br><span dir="ltr">+20 2 1234 5678</span></div>
+        </div>
+        <div class="info-item">
+          <i class="bi bi-envelope"></i>
+          <div><strong>البريد الإلكتروني</strong><br>info@alrased.com</div>
+        </div>
+        <div class="info-item">
+          <i class="bi bi-clock"></i>
+          <div><strong>ساعات العمل</strong><br>السبت – الخميس: 9 ص – 6 م</div>
+        </div>
+        <div class="social">
+          <a href="#" aria-label="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="twitter-x"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="youtube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <form class="panel" asp-controller="Home" asp-action="SaveContact" method="post">
+        @Html.AntiForgeryToken()
+        <h4 class="mb-4">أرسل رسالة</h4>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">الاسم الكامل</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+          </div>
+
+         <div class="col-md-6">
+    <label class="form-label">البريد الإلكتروني</label>
+    <input asp-for="Email" type="email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger small"></span>
+</div>
+
+          <div class="col-12">
+            <label class="form-label">الموضوع</label>
+            <input asp-for="Subject" class="form-control" />
+            <span asp-validation-for="Subject" class="text-danger small"></span>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">الرسالة</label>
+            <textarea asp-for="Message" rows="5" class="form-control"></textarea>
+            <span asp-validation-for="Message" class="text-danger small"></span>
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-accent px-4" type="submit">إرسال الرسالة</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,23 @@
+﻿```cshtml
+<main class="container py-5">
+    <div class="row g-4">
+        @foreach (var team in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="team-card text-center">
+
+                    <img src="@Url.Content("~/" + team.Image.TrimStart('/'))"
+                         class="rounded-circle img-fluid mb-4"
+                         alt="@team.Name"
+                         style="width: 150px; height: 150px; object-fit: cover;"
+                         onerror="this.onerror=null; this.src='/Images/default.jpg';" />
+
+                    <h5>@team.Name</h5>
+                    <div class="role mb-2">@team.Jobtitle</div>
+
+                </div>
+            </div>
+        }
+    </div>
+</main>
+```

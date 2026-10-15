@@ -1,0 +1,94 @@
+@model WebApplication1.Models.Teamnumbers
+
+@{
+    ViewData["Title"] = "تفاصيل العضو";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-2">تفاصيل العضو</h2>
+            <p class="text-muted mb-0">عرض بيانات وصورة عضو الفريق بالتفصيل.</p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-3">
+            <i class="bi bi-arrow-right ms-1"></i>
+            العودة إلى الفريق
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-info-circle ms-2 text-primary"></i>
+                        معلومات العضو
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    
+                    <!-- عرض صورة العضو بشكل أنيق ودائري -->
+                    <div class="text-center mb-4">
+                        @if (!string.IsNullOrWhiteSpace(Model.Image))
+                        {
+                            <img src="@Url.Content(Model.Image)"
+                                 alt="@Model.Name"
+                                 class="rounded-circle border shadow-sm"
+                                 style="width: 120px; height: 120px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <div class="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center text-muted shadow-sm"
+                                 style="width: 120px; height: 120px;">
+                                <i class="bi bi-person fs-1"></i>
+                            </div>
+                        }
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- تفاصيل البيانات -->
+                    <dl class="row mb-0 gy-3">
+                        <dt class="col-sm-3 fw-semibold text-muted">
+                            اسم العضو
+                        </dt>
+                        <dd class="col-sm-9 fw-bold fs-5 text-dark">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt class="col-sm-3 fw-semibold text-muted">
+                            المسمى الوظيفي
+                        </dt>
+                        <dd class="col-sm-9 text-dark">
+                            @Html.DisplayFor(model => model.Jobtitle)
+                        </dd>
+                    </dl>
+
+                    <hr class="my-4" />
+
+                    <!-- أزرار التحكم -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" 
+                           class="btn btn-primary rounded-3 px-4 py-2">
+                            <i class="bi bi-pencil-square ms-2"></i>
+                            تعديل البيانات
+                        </a>
+
+                        <a asp-action="Index" 
+                           class="btn btn-light border rounded-3 px-4 py-2">
+                            <i class="bi bi-arrow-right ms-2"></i>
+                            العودة للقائمة
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+
+@model WebApplication1.Models.Category
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "إضافة تصنيف";
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="mb-4">
+        <h2 class="fw-bold mb-2">إضافة تصنيف جديد</h2>
+        <p class="text-muted mb-0">
+            أضف تصنيفًا جديدًا لتنظيم الأخبار على الموقع.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-9">
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <!-- رأس النموذج -->
+                <div class="card-header bg-white border-0 p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-box">
+                            <i class="bi bi-folder-plus"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="fw-bold mb-1">بيانات التصنيف</h5>
+                            <p class="text-muted mb-0 small">
+                                أدخل اسم التصنيف والشعار الخاص به.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger rounded-3"></div>
+
+                        <!-- اسم التصنيف -->
+                        <div class="mb-4">
+                            <label asp-for="Name"
+                                   class="form-label fw-semibold">
+                                اسم التصنيف
+                            </label>
+
+                            <input asp-for="Name"
+                                   class="form-control form-control-lg"
+                                   placeholder="مثال: الرياضة، الاقتصاد، التكنولوجيا" />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger small"></span>
+                        </div>
+
+                        <!-- شعار التصنيف -->
+                        <div class="mb-4">
+                            <label asp-for="Logo"
+                                   class="form-label fw-semibold">
+                                رابط الشعار أو مساره
+                            </label>
+
+                            <input asp-for="Logo"
+                                   class="form-control form-control-lg"
+                                   placeholder="أدخل مسار صورة الشعار" />
+
+                            <span asp-validation-for="Logo"
+                                  class="text-danger small"></span>
+
+                            <small class="text-muted d-block mt-2">
+                                أدخل مسار الصورة وفقًا لطريقة تخزين الصور في مشروعك.
+                            </small>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- الأزرار -->
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <button type="submit"
+                                    class="btn btn-primary rounded-3 px-4 py-2">
+                                <i class="bi bi-check-lg ms-2"></i>
+                                حفظ التصنيف
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-light border rounded-3 px-4 py-2">
+                                <i class="bi bi-arrow-right ms-2"></i>
+                                إلغاء والعودة
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .icon-box {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f0ff;
+        color: #0d6efd;
+        border-radius: 14px;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border-color: #dee2e6;
+        padding: 12px 14px;
+    }
+
+    .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+    }
+</style>
+

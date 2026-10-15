@@ -1,0 +1,182 @@
+@model IEnumerable<WebApplication1.Models.ContactUs>
+
+@{
+    ViewData["Title"] = "رسائل تواصل معنا";
+    Layout = "_AdminLayout";
+
+    // حساب إجمالي عدد الرسائل الواردة
+    int totalCount = Model?.Count() ?? 0;
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-2">رسائل تواصل معنا</h2>
+            <p class="text-muted mb-0">عرض ومتابعة الرسائل والاستفسارات الواردة من زوار الموقع.</p>
+        </div>
+    </div>
+
+    <!-- كارت إحصائي لإجمالي الرسائل -->
+    <div class="row mb-4">
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small d-block mb-1 fw-semibold">إجمالي الرسائل الواردة</span>
+                        <h3 class="fw-bold mb-0 text-dark">@totalCount</h3>
+                    </div>
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 text-primary d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+                        <i class="bi bi-envelope-open-fill fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- 1. جدول عرض الرسائل (يظهر فقط في الشاشات الكبيرة d-none d-lg-block) -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden d-none d-lg-block">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-inbox-fill ms-2 text-primary"></i>
+                    صندوق الرسائل الواردة
+                </h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 fw-semibold">
+                    العدد: @totalCount
+                </span>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class="py-3 px-4">#</th>
+                                <th class="py-3">الاسم</th>
+                                <th class="py-3">البريد الإلكتروني</th>
+                                <th class="py-3">موضوع الرسالة</th>
+                                <th class="py-3">نص الرسالة</th>
+                                <th class="py-3 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="px-4 fw-semibold text-muted">@index</td>
+
+                                    <!-- اسم الراسل -->
+                                    <td>
+                                        <div class="fw-bold text-dark">@item.Name</div>
+                                    </td>
+
+                                    <!-- البريد الإلكتروني -->
+                                    <td>
+                                        <a href="mailto:@item.Email" class="text-decoration-none text-primary dir-ltr d-inline-block">
+                                            <i class="bi bi-envelope ms-1"></i>
+                                            @item.Email
+                                        </a>
+                                    </td>
+
+                                    <!-- الموضوع -->
+                                    <td>
+                                        <span class="badge bg-light text-dark border fw-normal px-2 py-1">
+                                            @item.Subject
+                                        </span>
+                                    </td>
+
+                                    <!-- نص الرسالة (مختصر) -->
+                                    <td>
+                                        <span class="text-secondary d-inline-block text-truncate" style="max-width: 250px;">
+                                            @item.Message
+                                        </span>
+                                    </td>
+
+                                    <!-- الإجراءات -->
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Details" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-info rounded-3 px-2"
+                                               title="قراءة الرسالة كاملة">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a asp-action="Delete" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-danger rounded-3 px-2"
+                                               title="حذف الرسالة">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. كروت الموبايل (تظهر فقط في الشاشات الصغيرة d-block d-lg-none) -->
+        <div class="d-block d-lg-none">
+            <div class="row g-3">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1">
+                                        <i class="bi bi-person-circle text-primary ms-1"></i>
+                                        @item.Name
+                                    </h6>
+                                    <a href="mailto:@item.Email" class="small text-decoration-none text-muted">
+                                        <i class="bi bi-envelope"></i> @item.Email
+                                    </a>
+                                </div>
+                                <span class="badge bg-light text-dark border small fw-normal">
+                                    @item.Subject
+                                </span>
+                            </div>
+
+                            <p class="text-secondary small mb-3 text-truncate" style="max-width: 100%;">
+                                @item.Message
+                            </p>
+
+                            <hr class="my-2 text-muted opacity-25">
+
+                            <div class="d-flex justify-content-between align-items-center pt-1">
+                                <span class="text-muted small">الإجراءات:</span>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Details" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-info rounded-3 px-3">
+                                        <i class="bi bi-eye ms-1"></i> قراءة
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-danger rounded-3 px-3">
+                                        <i class="bi bi-trash ms-1"></i> حذف
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- رسالة عدم وجود عناصر -->
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+            <i class="bi bi-inbox fs-1 d-block mb-2 text-muted"></i>
+            <h5 class="fw-bold">لا توجد رسائل واردة</h5>
+            <p class="text-muted mb-0">لم يقم أحد بملء نموذج التواصل حتى الآن.</p>
+        </div>
+    }
+</div>

@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using WebApplication1
+@using WebApplication1.Models
+@using WebApplication1.Data
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<ul class="navbar-nav ms-auto align-items-center">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item me-2">
+        <a class="nav-link text-light fw-bold"  title="Manage">
+            <i class="bi bi-person-circle"></i> @(User.Identity?.Name?.Split('@')[0])
+        </a>
+    </li>
+  @if (User.IsInRole("Admin"))
+{
+    <li class="nav-item me-2">
+        <a class="btn btn-outline-danger btn-sm text-light border-danger px-3" 
+           asp-area="" 
+           asp-controller="Admin" 
+           asp-action="Index">Dashboard</a>
+    </li>
+}
+
+<li class="nav-item">
+    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="btn btn-outline-danger btn-sm text-light border-danger px-3">تسجيل خروج</button>
+    </form>
+</li>
+}
+else
+{
+    <li class="nav-item me-2">
+        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">تسجيل دخول</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-primary text-white px-3 py-1" asp-area="Identity" asp-page="/Account/Register">انشاء حساب</a>
+    </li>
+}
+</ul>

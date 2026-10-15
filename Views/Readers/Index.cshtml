@@ -1,0 +1,200 @@
+@model IEnumerable<WebApplication1.Models.Readers>
+
+@{
+    ViewData["Title"] = "آراء وتقييمات القراء";
+    Layout = "_AdminLayout";
+
+    // حساب إجمالي عدد التقييمات والتعليقات
+    int totalCount = Model?.Count() ?? 0;
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-2">آراء وتقييمات القراء</h2>
+            <p class="text-muted mb-0">عرض ومتابعة آراء الزوار وتقييماتهم على المحتوى.</p>
+        </div>
+    </div>
+
+    <!-- كارت إحصائي لعدد التعليقات -->
+    <div class="row mb-4">
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted small d-block mb-1 fw-semibold">إجمالي التقييمات والتعليقات</span>
+                        <h3 class="fw-bold mb-0 text-dark">@totalCount</h3>
+                    </div>
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 text-warning d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+                        <i class="bi bi-chat-square-quote-fill fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- 1. جدول عرض التقييمات (يظهر فقط في الشاشات الكبيرة d-none d-lg-block) -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden d-none d-lg-block">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-star-half ms-2 text-warning"></i>
+                    قائمة التقييمات والتعليقات
+                </h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 fw-semibold">
+                    العدد: @totalCount
+                </span>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class="py-3 px-4">#</th>
+                                <th class="py-3">اسم القارئ</th>
+                                <th class="py-3">التقييم</th>
+                                <th class="py-3">الرأي / التعليق</th>
+                                <th class="py-3">تاريخ الإضافة</th>
+                                <th class="py-3 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="px-4 fw-semibold text-muted">@index</td>
+
+                                    <!-- اسم القارئ -->
+                                    <td>
+                                        <div class="fw-bold text-dark">@item.Name</div>
+                                    </td>
+
+                                    <!-- عرض التقييم بالنجوم ⭐ -->
+                                    <td>
+                                        <div class="text-warning fs-6">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= item.Rating)
+                                                {
+                                                    <i class="bi bi-star-fill"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-star text-muted opacity-25"></i>
+                                                }
+                                            }
+                                            <span class="text-muted small ms-1">(@item.Rating/5)</span>
+                                        </div>
+                                    </td>
+
+                                    <!-- نص الرأي / التعليق -->
+                                    <td>
+                                        <span class="text-secondary d-inline-block text-truncate" style="max-width: 300px;">
+                                            @item.Review
+                                        </span>
+                                    </td>
+
+                                    <!-- التاريخ -->
+                                    <td class="text-muted small">
+                                        @item.CreatedAt.ToString("yyyy-MM-dd")
+                                    </td>
+
+                                    <!-- الإجراءات -->
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Details" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-info rounded-3 px-2"
+                                               title="عرض التفاصيل الكاملة">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a asp-action="Delete" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-danger rounded-3 px-2"
+                                               title="حذف التقييم">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. كروت التقييمات للموبايل (تظهر فقط في الشاشات الصغيرة d-block d-lg-none) -->
+        <div class="d-block d-lg-none">
+            <div class="row g-3">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-1">
+                                        <i class="bi bi-person-circle text-primary ms-1"></i>
+                                        @item.Name
+                                    </h6>
+                                    <span class="text-muted small">
+                                        <i class="bi bi-calendar3"></i> @item.CreatedAt.ToString("yyyy-MM-dd")
+                                    </span>
+                                </div>
+                                <div class="text-warning small">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= item.Rating)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star text-muted opacity-25"></i>
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                            <p class="text-secondary small mb-3 text-truncate" style="max-width: 100%;">
+                                @item.Review
+                            </p>
+
+                            <hr class="my-2 text-muted opacity-25">
+
+                            <div class="d-flex justify-content-between align-items-center pt-1">
+                                <span class="text-muted small">الإجراءات:</span>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Details" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-info rounded-3 px-3">
+                                        <i class="bi bi-eye ms-1"></i> عرض
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-danger rounded-3 px-3">
+                                        <i class="bi bi-trash ms-1"></i> حذف
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- رسالة عدم وجود عناصر -->
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+            <i class="bi bi-star fs-1 d-block mb-2 text-muted"></i>
+            <h5 class="fw-bold">لا توجد تقييمات أو آراء</h5>
+            <p class="text-muted mb-0">لم يقم أحد من القراء بإضافة أي تقييمات بعد.</p>
+        </div>
+    }
+</div>

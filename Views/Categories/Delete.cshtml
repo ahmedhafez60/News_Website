@@ -1,0 +1,166 @@
+
+@model WebApplication1.Models.Category
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "حذف التصنيف";
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="mb-4">
+        <h2 class="fw-bold mb-2">حذف التصنيف</h2>
+        <p class="text-muted mb-0">
+            مراجعة بيانات التصنيف قبل حذفه من الموقع.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-7 col-lg-9">
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <!-- رسالة التحذير -->
+                <div class="delete-header p-4 text-center">
+                    <div class="warning-icon mx-auto mb-3">
+                        <i class="bi bi-trash3"></i>
+                    </div>
+
+                    <h4 class="fw-bold mb-2">هل أنت متأكد من حذف التصنيف؟</h4>
+
+                    <p class="mb-0 text-muted">
+                        يرجى مراجعة البيانات التالية قبل تأكيد الحذف.
+                    </p>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- بيانات التصنيف -->
+                    <div class="category-info">
+
+                        <div class="info-row">
+                            <span class="info-label">رقم التصنيف</span>
+                            <span class="fw-semibold">@Model.Id</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">اسم التصنيف</span>
+                            <span class="fw-bold">@Model.Name</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">الشعار</span>
+
+                            <div>
+                                @if (!string.IsNullOrWhiteSpace(Model.Logo))
+                                {
+                                    <i class="bi @Model.Logo"></i>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">لا يوجد شعار</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">عدد الأخبار</span>
+                            <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-2">
+                                @(Model.News?.Count() ?? 0) خبر
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-warning border-0 rounded-3 mt-4 mb-4">
+                        <i class="bi bi-exclamation-triangle ms-2"></i>
+                        <strong>تنبيه:</strong>
+                        تأكد من عدم وجود أخبار مرتبطة بهذا التصنيف قبل الحذف.
+                    </div>
+
+                    <!-- أزرار التحكم -->
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <button type="submit"
+                                    class="btn btn-danger rounded-3 px-4 py-2"
+                                    onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا التصنيف؟');">
+                                <i class="bi bi-trash3 ms-2"></i>
+                                تأكيد الحذف
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-light border rounded-3 px-4 py-2">
+                                <i class="bi bi-arrow-right ms-2"></i>
+                                إلغاء والعودة
+                            </a>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .delete-header {
+        background: #fffafa;
+        border-bottom: 1px solid #f5e5e5;
+    }
+
+    .warning-icon {
+        width: 75px;
+        height: 75px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fee2e2;
+        color: #dc3545;
+        border-radius: 22px;
+        font-size: 32px;
+    }
+
+    .category-info {
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 8px 20px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .category-logo {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 4px;
+    }
+
+    @@media (max-width: 576px) {
+        .info-row {
+            align-items: flex-start;
+        }
+    }
+</style>

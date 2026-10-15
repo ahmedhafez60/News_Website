@@ -1,0 +1,440 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="register-page" dir="rtl">
+    <div class="register-card">
+
+        <!-- الجانب التعريفي -->
+        <div class="register-intro">
+            <div class="brand-icon">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+
+            <h2>انضم إلينا الآن</h2>
+
+            <p>
+                أنشئ حسابك وابدأ رحلتك معنا.
+                سجّل بياناتك واستمتع بتجربة استخدام سهلة ومميزة.
+            </p>
+
+            <div class="intro-features">
+                <div>
+                    <i class="bi bi-shield-check"></i>
+                    <span>حساب آمن</span>
+                </div>
+                <div>
+                    <i class="bi bi-lightning-charge"></i>
+                    <span>تسجيل سريع</span>
+                </div>
+                <div>
+                    <i class="bi bi-person-check"></i>
+                    <span>تجربة مميزة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- نموذج التسجيل -->
+        <div class="register-form-section">
+
+            <div class="form-heading">
+                <span class="form-subtitle">ابدأ الآن</span>
+                <h1>إنشاء حساب</h1>
+                <p>أدخل بياناتك لإنشاء حساب جديد.</p>
+            </div>
+
+            <form id="registerForm"
+                  asp-route-returnUrl="@Model.ReturnUrl"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger validation-summary"
+                     role="alert"></div>
+
+                <!-- البريد الإلكتروني -->
+                <div class="input-group-custom">
+                    <label asp-for="Input.Email">البريد الإلكتروني</label>
+
+                    <div class="input-icon-wrapper">
+                        <i class="bi bi-envelope"></i>
+                        <input asp-for="Input.Email"
+                               class="form-control"
+                               autocomplete="username"
+                               aria-required="true"
+                               placeholder="example@email.com"
+                               dir="ltr" />
+                    </div>
+
+                    <span asp-validation-for="Input.Email"
+                          class="field-error"></span>
+                </div>
+
+                <!-- كلمة المرور -->
+                <div class="input-group-custom">
+                    <label asp-for="Input.Password">كلمة المرور</label>
+
+                    <div class="input-icon-wrapper">
+                        <i class="bi bi-lock"></i>
+
+                        <input asp-for="Input.Password"
+                               id="registerPassword"
+                               class="form-control password-input"
+                               autocomplete="new-password"
+                               aria-required="true"
+                               placeholder="أدخل كلمة المرور"
+                               dir="ltr" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                data-target="registerPassword"
+                                aria-label="إظهار كلمة المرور">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <span asp-validation-for="Input.Password"
+                          class="field-error"></span>
+                </div>
+
+                <!-- تأكيد كلمة المرور -->
+                <div class="input-group-custom">
+                    <label asp-for="Input.ConfirmPassword">
+                        تأكيد كلمة المرور
+                    </label>
+
+                    <div class="input-icon-wrapper">
+                        <i class="bi bi-shield-lock"></i>
+
+                        <input asp-for="Input.ConfirmPassword"
+                               id="confirmPassword"
+                               class="form-control password-input"
+                               autocomplete="new-password"
+                               aria-required="true"
+                               placeholder="أعد كتابة كلمة المرور"
+                               dir="ltr" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                data-target="confirmPassword"
+                                aria-label="إظهار كلمة المرور">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <span asp-validation-for="Input.ConfirmPassword"
+                          class="field-error"></span>
+                </div>
+
+                <button id="registerSubmit"
+                        type="submit"
+                        class="register-btn">
+                    إنشاء الحساب
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+
+                <div class="login-link">
+                    لديك حساب بالفعل؟
+                    <a asp-page="./Login"
+                       asp-route-returnUrl="@Model.ReturnUrl">
+                        سجّل الدخول
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-page {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 18px;
+        background: #f4f7fb;
+        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 1000px;
+        min-height: 590px;
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        background: #fff;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(30, 50, 80, 0.10);
+    }
+
+    .register-intro {
+        background: linear-gradient(145deg, #087f8c, #124e78);
+        color: #fff;
+        padding: 55px 38px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .brand-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin-bottom: 28px;
+    }
+
+    .register-intro h2 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .register-intro > p {
+        color: rgba(255,255,255,0.85);
+        line-height: 2;
+        font-size: 15px;
+        margin-bottom: 32px;
+    }
+
+    .intro-features {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .intro-features div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+    }
+
+    .intro-features i {
+        font-size: 20px;
+        color: #a7f3e8;
+    }
+
+    .register-form-section {
+        padding: 45px 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-heading {
+        margin-bottom: 28px;
+    }
+
+    .form-subtitle {
+        color: #087f8c;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .form-heading h1 {
+        font-size: 29px;
+        font-weight: 800;
+        color: #172b4d;
+        margin: 8px 0;
+    }
+
+    .form-heading p {
+        color: #778398;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    .input-group-custom {
+        margin-bottom: 20px;
+    }
+
+    .input-group-custom label {
+        display: block;
+        color: #26364d;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .input-icon-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon-wrapper > i:first-child {
+        position: absolute;
+        right: 15px;
+        color: #8a98ab;
+        font-size: 17px;
+        pointer-events: none;
+    }
+
+    .input-icon-wrapper .form-control {
+        height: 50px;
+        border: 1px solid #dfe6ef;
+        border-radius: 10px;
+        background: #f9fbfd;
+        padding: 10px 44px 10px 42px;
+        font-size: 14px;
+        box-shadow: none;
+        transition: border-color .2s, background .2s;
+    }
+
+    .input-icon-wrapper .form-control:focus {
+        border-color: #087f8c;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(8,127,140,0.10);
+    }
+
+    .input-icon-wrapper .password-input {
+        padding-left: 44px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        left: 10px;
+        border: 0;
+        background: transparent;
+        color: #778398;
+        padding: 7px;
+        cursor: pointer;
+        font-size: 17px;
+    }
+
+    .password-toggle:hover {
+        color: #087f8c;
+    }
+
+    .field-error {
+        display: block;
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .validation-summary:empty {
+        display: none;
+    }
+
+    .validation-summary {
+        font-size: 13px;
+        border-radius: 9px;
+    }
+
+    .register-btn {
+        width: 100%;
+        min-height: 51px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 0;
+        border-radius: 10px;
+        background: linear-gradient(100deg, #087f8c, #126b91);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        margin-top: 8px;
+        cursor: pointer;
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .register-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(8,127,140,0.22);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 14px;
+        color: #778398;
+    }
+
+    .login-link a {
+        color: #087f8c;
+        font-weight: 700;
+        text-decoration: none;
+        margin-right: 4px;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    @@media (max-width: 768px) {
+        .register-page {
+            padding: 25px 12px;
+        }
+
+        .register-card {
+            grid-template-columns: 1fr;
+            max-width: 520px;
+        }
+
+        .register-intro {
+            padding: 30px 26px;
+        }
+
+        .brand-icon {
+            width: 55px;
+            height: 55px;
+            margin-bottom: 18px;
+        }
+
+        .register-intro h2 {
+            font-size: 25px;
+        }
+
+        .register-intro > p {
+            margin-bottom: 20px;
+        }
+
+        .intro-features {
+            gap: 12px;
+        }
+
+        .register-form-section {
+            padding: 32px 24px;
+        }
+
+        .form-heading h1 {
+            font-size: 26px;
+        }
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.querySelectorAll(".password-toggle").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const input = document.getElementById(button.dataset.target);
+                const icon = button.querySelector("i");
+
+                if (!input || !icon) return;
+
+                const showPassword = input.type === "password";
+                input.type = showPassword ? "text" : "password";
+
+                icon.classList.toggle("bi-eye", !showPassword);
+                icon.classList.toggle("bi-eye-slash", showPassword);
+
+                button.setAttribute(
+                    "aria-label",
+                    showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+                );
+            });
+        });
+    </script>
+}

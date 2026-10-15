@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WebApplication1.Models.News>
+
+@{
+    var categories = ViewBag.Categories as List<WebApplication1.Models.Category>;
+}
+    <main class="container py-5"> 
+      <section id="categories" class="mb-5">
+        <h3 class="section-title">التصنيفات</h3>
+        <div class="row g-3">
+          
+            @foreach(var cat in categories)
+            {
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a asp-action="News" asp-route-id="@cat.Id" asp-controller="Home" class="cat-card">
+              <i class="bi @cat.Logo"></i>
+              <div class="fw-bold mt-2">@cat.Name</div>
+            </a>
+          </div>
+            }
+          
+
+
+         
+        </div>
+      </section>
+      <section>
+        <h3 class="section-title">آخر الأخبار</h3>
+        <div class="row g-4">
+           @foreach (var news in Model)
+            {
+            <div class="col-md-6 col-lg-4">
+                     <article class="news-card bg-white">
+                     <img src="@news.Image"
+                             class="card-img-top"
+                             alt="@news.Title"
+                             style="height: 220px; object-fit: cover;">
+                    <div class="p-3">
+                        <span class="badge badge-cat mb-2">@news.Category?.Name</span>
+                        <h5><a href="news.html" >@news.Title</a></h5>
+                            <p class="text-secondary small">@news.Topic</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="bi bi-calendar3"></i> @news.Date </small>
+                                <a class="btn btn-sm btn-accent" asp-controller="Home" asp-action="Details" asp-route-id="@news.Id">اقرأ المزيد</a>
+                        </div>
+                    </div>
+                </article>
+            
+        </div>
+        }
+        </div>
+
+
+
+        
+      </section>
+    </main>                                    

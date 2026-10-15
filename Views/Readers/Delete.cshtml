@@ -1,0 +1,102 @@
+@model WebApplication1.Models.Readers
+
+@{
+    ViewData["Title"] = "حذف التقييم";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-2 text-danger">حذف تقييم القارئ</h2>
+            <p class="text-muted mb-0">هل أنت متأكد من رغبتك في حذف هذا التقييم؟ لا يمكن التراجع عن هذا الإجراء.</p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-3">
+            <i class="bi bi-arrow-right ms-1"></i>
+            العودة للقائمة
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-exclamation-triangle-fill ms-2"></i>
+                        تأكيد عملية الحذف
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    
+                    <!-- عرض التقييم بالنجوم ⭐ -->
+                    <div class="text-center mb-4">
+                        <div class="text-warning fs-3 mb-1">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Rating)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star text-muted opacity-25"></i>
+                                }
+                            }
+                        </div>
+                        <span class="badge bg-light text-dark border px-3 py-2 fs-6">
+                            التقييم: @Model.Rating من 5
+                        </span>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- تفاصيل البيانات -->
+                    <dl class="row mb-0 gy-3">
+                        <dt class="col-sm-3 fw-semibold text-muted">
+                            اسم القارئ
+                        </dt>
+                        <dd class="col-sm-9 fw-bold fs-5 text-dark">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt class="col-sm-3 fw-semibold text-muted">
+                            الرأي / التعليق
+                        </dt>
+                        <dd class="col-sm-9 text-secondary fs-6">
+                            @Html.DisplayFor(model => model.Review)
+                        </dd>
+
+                        <dt class="col-sm-3 fw-semibold text-muted">
+                            تاريخ الإضافة
+                        </dt>
+                        <dd class="col-sm-9 text-muted small">
+                            @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                        </dd>
+                    </dl>
+
+                    <hr class="my-4" />
+
+                    <!-- فورم الحذف وأزرار التحكم -->
+                    <form asp-action="Delete" class="d-flex gap-2 flex-wrap">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <button type="submit" class="btn btn-danger rounded-3 px-4 py-2">
+                            <i class="bi bi-trash ms-2"></i>
+                            تأكيد الحذف
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-light border rounded-3 px-4 py-2">
+                            إلغاء
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

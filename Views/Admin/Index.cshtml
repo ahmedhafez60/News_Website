@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "لوحة التحكم";
+    var arCulture = new System.Globalization.CultureInfo("ar-SA");
+    var latestNews = ViewBag.LatestNews as List<News>
+                     ?? new List<News>();
+
+    var latestRenders = ViewBag.LatestRenders as List<Readers>
+                        ?? new List<Readers>();
+    var categoryNames = ViewBag.CategoryNames as string[]
+                       ?? Array.Empty<string>();
+
+    var categoryCounts = ViewBag.CategoryCounts as int[]
+                         ?? Array.Empty<int>();
+}
+
+<div class="flex-grow-1 min-vw-0 overflow-hidden">
+    <main class="p-2 p-sm-3 p-lg-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <div>
+                <h3 class="mb-0 fs-4 fs-md-3">لوحة التحكم</h3>
+                <small class="text-muted">نظرة عامة على أداء الموقع اليوم</small>
+            </div>
+            <a asp-controller="News" asp-action="Create" class="btn btn-accent flex-grow-1 flex-sm-grow-0 text-center"><i class="bi bi-plus-lg"></i> خبر جديد</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="stat h-100">
+                    <div class="ico" style="background:#fde8eb;color:#c8102e"><i class="bi bi-newspaper"></i></div>
+                    <div class="min-w-0"><div class="num">@ViewBag.TotalNews</div><div class="text-muted small">إجمالي الأخبار</div><small class="up"> </small></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="stat h-100">
+                    <div class="ico" style="background:#e3f0fb;color:#0d6efd"> <i class="bi bi-grid fs-3"></i></div>
+                    <div class="min-w-0"><div class="num">@ViewBag.TotalCategories</div><div class="text-muted small">التصنيفات</div><small class="up"></small></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="stat h-100">
+                    <div class="ico" style="background:#e4f6ec;color:#198754"><i class="bi bi-chat-dots"></i></div>
+                    <div class="min-w-0"><div class="num">@ViewBag.TotalRenders</div><div class="text-muted small">التعليقات</div><small class="down">   </small></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="stat h-100">
+                    <div class="ico" style="background:#fff3dc;color:#e69500"><i class="bi bi-people"></i></div>
+                    <div class="min-w-0"><div class="num">@ViewBag.TotalContacts</div><div class="text-muted small">الرسائل</div><small class="up">  </small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-lg-8">
+            </div>
+            <div class="col-12 col-lg-4">
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <!-- Latest articles -->
+            <div class="col-12 col-xl-8">
+                <div class="card-box h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">آخر الأخبار</h5>
+                        <a asp-controller="News" asp-action="Index" class="small text-decoration-none">عرض الكل</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>الخبر</th>
+                                    <th class="d-none d-sm-table-cell">التصنيف</th>
+                                    <th class="d-none d-md-table-cell">الحالة</th>
+                                    <th class="d-none d-md-table-cell">المشاهدات</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (latestNews.Any())
+                                {
+                                    foreach (var item in latestNews)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    @if (!string.IsNullOrWhiteSpace(item.Image))
+                                                    {
+                                                        <img class="thumb flex-shrink-0"
+                                                             src="@Url.Content("~/" + item.Image.TrimStart('/'))"
+                                                             alt="@item.Title"
+                                                             style="width: 45px; height: 45px; object-fit: cover;"
+                                                             onerror="this.style.display='none';" />
+                                                    }
+                                                    <div class="text-truncate" style="max-width: min(200px, 42vw);">
+                                                        <div class="fw-bold text-truncate">@item.Title</div>
+                                                        <small class="text-muted text-nowrap">
+                                                            @item.Date.ToString("dd MMM yyyy")
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="d-none d-sm-table-cell">
+                                                <span class="badge badge-cat text-truncate" style="max-width: 100px;">
+                                                    @(item.Category?.Name ?? "بدون تصنيف")
+                                                </span>
+                                            </td>
+
+                                            <td class="d-none d-md-table-cell">
+                                                <span class="badge text-bg-success">مسجل</span>
+                                            </td>
+
+                                            <td class="d-none d-md-table-cell">—</td>
+
+                                            <td class="text-nowrap">
+                                                <a asp-controller="News"
+                                                   asp-action="Edit"
+                                                   asp-route-id="@item.Id"
+                                                   class="icon-btn"
+                                                   title="تعديل">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+
+                                                <a asp-controller="News"
+                                                   asp-action="Delete"
+                                                   asp-route-id="@item.Id"
+                                                   class="icon-btn danger"
+                                                   title="حذف">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">
+                                            لا توجد أخبار مسجلة حتى الآن.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent comments -->
+            <div class="col-12 col-xl-4">
+                <div class="card-box h-100">
+                    <h5 class="mb-3">أحدث التعليقات</h5>
+                    @if (latestRenders.Any())
+                    {
+                        foreach (var item in latestRenders)
+                        {
+                            <div class="cmt d-flex align-items-start gap-2 mb-3 pb-3 border-bottom">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <div class="fw-bold d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                        <span class="text-truncate">@item.Name</span>
+                                        <small class="text-muted fw-normal">· @item.CreatedAt.ToString("dddd", arCulture)</small>
+                                    </div>
+                                    <div class="small text-secondary text-truncate my-1">@item.Review</div>
+                                    <div class="text-warning fs-6 d-flex align-items-center">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Rating)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-star text-muted opacity-25"></i>
+                                            }
+                                        }
+                                        <span class="text-muted small ms-1">(@item.Rating/5)</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="icon-btn align-self-start flex-shrink-0" title="موافقة"><i class="bi bi-check-lg"></i></a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted small">
+                            لا توجد تعليقات مسجلة حتى الآن.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

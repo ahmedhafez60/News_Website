@@ -1,0 +1,365 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+<div class="login-page" dir="rtl">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center min-vh-75">
+
+            <div class="col-lg-10 col-xl-9">
+                <div class="login-card shadow-lg">
+
+                    <!-- الجانب التعريفي -->
+                    <div class="login-info">
+                        <div class="brand-icon">
+                            <i class="bi bi-newspaper"></i>
+                        </div>
+
+                        <h2 class="fw-bold mt-4">أهلاً بعودتك!</h2>
+
+                        <p class="mt-3">
+                            سجّل دخولك لمتابعة الأخبار وإدارة حسابك
+                            والاستمتاع بتجربة مميزة.
+                        </p>
+
+                        <div class="login-feature">
+                            <i class="bi bi-shield-check"></i>
+                            <span>تسجيل دخول آمن</span>
+                        </div>
+
+                        <div class="login-feature">
+                            <i class="bi bi-lightning-charge"></i>
+                            <span>وصول سريع لحسابك</span>
+                        </div>
+                    </div>
+
+                    <!-- نموذج تسجيل الدخول -->
+                    <div class="login-form-area">
+                        <div class="mb-4">
+                            <h3 class="fw-bold">تسجيل الدخول</h3>
+                            <p class="text-muted">أدخل بيانات حسابك للمتابعة</p>
+                        </div>
+
+                        <form id="account" method="post">
+                            <div asp-validation-summary="ModelOnly"
+                                 class="alert alert-danger rounded-3"
+                                 role="alert"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Email"
+                                       class="form-label fw-semibold">
+                                    البريد الإلكتروني
+                                </label>
+
+                                <div class="input-group login-input">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+
+                                    <input asp-for="Input.Email"
+                                           class="form-control"
+                                           autocomplete="username"
+                                           aria-required="true"
+                                           placeholder="name@example.com" />
+                                </div>
+
+                                <span asp-validation-for="Input.Email"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Password"
+                                       class="form-label fw-semibold">
+                                    كلمة المرور
+                                </label>
+
+                                <div class="input-group login-input">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock"></i>
+                                    </span>
+
+                                    <input asp-for="Input.Password"
+                                           id="loginPassword"
+                                           class="form-control"
+                                           autocomplete="current-password"
+                                           aria-required="true"
+                                           placeholder="أدخل كلمة المرور" />
+
+                                    <button class="input-group-text password-toggle"
+                                            type="button"
+                                            id="togglePassword"
+                                            aria-label="إظهار كلمة المرور">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+
+                                <span asp-validation-for="Input.Password"
+                                      class="text-danger small"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                                <label asp-for="Input.RememberMe"
+                                       class="form-check d-flex align-items-center gap-2 mb-0">
+                                    <input asp-for="Input.RememberMe"
+                                           class="form-check-input mt-0" />
+                                    <span>تذكرني</span>
+                                </label>
+
+                                <a asp-page="./ForgotPassword"
+                                   class="login-link">
+                                    نسيت كلمة المرور؟
+                                </a>
+                            </div>
+
+                            <button id="login-submit"
+                                    type="submit"
+                                    class="btn login-submit w-100">
+                                تسجيل الدخول
+                                <i class="bi bi-arrow-left me-2"></i>
+                            </button>
+
+                            <div class="text-center mt-4">
+                                <span class="text-muted">ليس لديك حساب؟</span>
+                                <a asp-page="./Register"
+                                   asp-route-returnUrl="@Model.ReturnUrl"
+                                   class="login-link fw-bold">
+                                    أنشئ حسابًا جديدًا
+                                </a>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <a asp-page="./ResendEmailConfirmation"
+                                   id="resend-confirmation"
+                                   class="text-muted small text-decoration-none">
+                                    إعادة إرسال رسالة تأكيد البريد الإلكتروني
+                                </a>
+                            </div>
+                        </form>
+
+                        @if (Model.ExternalLogins?.Count > 0)
+                        {
+                            <div class="external-login mt-4">
+                                <div class="divider-text">
+                                    <span>أو سجّل الدخول باستخدام</span>
+                                </div>
+
+                                <form id="external-account"
+                                      asp-page="./ExternalLogin"
+                                      asp-route-returnUrl="@Model.ReturnUrl"
+                                      method="post">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach (var provider in Model.ExternalLogins!)
+                                        {
+                                            <button type="submit"
+                                                    class="btn btn-outline-secondary flex-grow-1"
+                                                    name="provider"
+                                                    value="@provider.Name">
+                                                @provider.DisplayName
+                                            </button>
+                                        }
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <p class="text-center text-muted small mt-4">
+                    © @DateTime.Now.Year جميع الحقوق محفوظة
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+
+    .login-page {
+        background: #f4f6fa;
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-card {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        background: #fff;
+        border-radius: 22px;
+        overflow: hidden;
+    }
+
+    .login-info {
+        background: linear-gradient(145deg, #10243a, #c8102e);
+        color: #fff;
+        padding: 48px 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .brand-icon {
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
+        background: rgba(255,255,255,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    .login-info p {
+        color: rgba(255,255,255,.8);
+        line-height: 1.9;
+    }
+
+    .login-feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .login-feature i {
+        font-size: 21px;
+    }
+
+    .login-form-area {
+        padding: 48px 40px;
+    }
+
+    .login-input .input-group-text,
+    .login-input .form-control {
+        background: #f8f9fc;
+        border-color: #e2e6ee;
+        padding: 13px;
+    }
+
+    .login-input .input-group-text:first-child {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .login-input .form-control {
+        min-width: 0;
+    }
+
+    .login-input .form-control:last-child,
+    .login-input .password-toggle {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .login-input .form-control:focus {
+        box-shadow: none;
+        border-color: #c8102e;
+    }
+
+    .password-toggle {
+        cursor: pointer;
+    }
+
+    .login-submit {
+        background: #c8102e;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        font-weight: 700;
+        transition: .2s;
+    }
+
+    .login-submit:hover {
+        background: #a50d26;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .login-link {
+        color: #c8102e;
+        text-decoration: none;
+    }
+
+    .login-link:hover {
+        color: #a50d26;
+        text-decoration: underline;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: #c8102e;
+        border-color: #c8102e;
+    }
+
+    .divider-text {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+
+    .divider-text::before,
+    .divider-text::after {
+        content: "";
+        height: 1px;
+        background: #e2e6ee;
+        flex: 1;
+    }
+
+    @@media (max-width: 767px) {
+        .login-card {
+            grid-template-columns: 1fr;
+        }
+
+        .login-info {
+            padding: 28px;
+        }
+
+        .login-info h2 {
+            font-size: 24px;
+        }
+
+        .login-feature {
+            margin-top: 12px;
+        }
+
+        .login-form-area {
+            padding: 30px 22px;
+        }
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('loginPassword');
+
+        togglePassword?.addEventListener('click', function () {
+            const isPassword = passwordInput.type === 'password';
+
+            passwordInput.type = isPassword ? 'text' : 'password';
+
+            this.innerHTML = isPassword
+                ? '<i class="bi bi-eye-slash"></i>'
+                : '<i class="bi bi-eye"></i>';
+
+            this.setAttribute(
+                'aria-label',
+                isPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'
+            );
+        });
+    </script>
+}

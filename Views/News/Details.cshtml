@@ -1,0 +1,208 @@
+```cshtml
+@model WebApplication1.Models.News
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "تفاصيل الخبر";
+}
+
+<div class="container-fluid py-4" dir="rtl">
+
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-2">تفاصيل الخبر</h2>
+            <p class="text-muted mb-0">
+                عرض تفاصيل الخبر ومحتواه وبيانات تصنيفه.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-light border rounded-3 px-4 py-2">
+            <i class="bi bi-arrow-right ms-2"></i>
+            العودة للأخبار
+        </a>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- صورة الخبر -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+
+                @if (!string.IsNullOrWhiteSpace(Model.Image))
+                {
+                    <img src="@Model.Image"
+                         alt="@Model.Title"
+                         class="news-image" />
+                }
+                else
+                {
+                    <div class="image-placeholder">
+                        <i class="bi bi-image"></i>
+                        <p class="mb-0 mt-2">لا توجد صورة للخبر</p>
+                    </div>
+                }
+
+                <div class="card-body p-4">
+                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3">
+                        <i class="bi bi-folder2-open ms-1"></i>
+                        @(Model.Category?.Name ?? "بدون تصنيف")
+                    </span>
+
+                    <h4 class="fw-bold mb-3">@Model.Title</h4>
+
+                    <div class="text-muted small">
+                        <i class="bi bi-calendar3 ms-2"></i>
+                        @Model.Date
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بيانات الخبر -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-header bg-white border-0 p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-info-circle ms-2 text-primary"></i>
+                        معلومات الخبر
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="detail-item">
+                        <span class="detail-label">عنوان الخبر</span>
+                        <span class="detail-value">@Model.Title</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">تاريخ النشر</span>
+                        <span class="detail-value">@Model.Date</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">التصنيف</span>
+                        <span class="detail-value">
+                            @(Model.Category?.Name ?? "بدون تصنيف")
+                        </span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">رقم التصنيف</span>
+                        <span class="detail-value">@Model.CategoryId</span>
+                    </div>
+
+                    <div class="mt-4">
+                        <h6 class="fw-bold mb-3">
+                            <i class="bi bi-file-text ms-2 text-primary"></i>
+                            موضوع الخبر
+                        </h6>
+
+                        <div class="topic-content">
+                            @if (!string.IsNullOrWhiteSpace(Model.Topic))
+                            {
+                                @Model.Topic
+                            }
+                            else
+                            {
+                                <span class="text-muted">لا يوجد محتوى متاح.</span>
+                            }
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-primary rounded-3 px-4 py-2">
+                            <i class="bi bi-pencil-square ms-2"></i>
+                            تعديل الخبر
+                        </a>
+
+                        <a asp-action="Index"
+                           class="btn btn-light border rounded-3 px-4 py-2">
+                            رجوع
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .news-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        background: #f8fafc;
+    }
+
+    .image-placeholder {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f1f5f9;
+        color: #94a3b8;
+        font-size: 18px;
+    }
+
+    .image-placeholder i {
+        font-size: 55px;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 16px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .detail-label {
+        color: #6c757d;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .detail-value {
+        font-weight: 600;
+        text-align: left;
+        overflow-wrap: anywhere;
+    }
+
+    .topic-content {
+        padding: 18px;
+        background: #f8fafc;
+        border: 1px solid #edf0f2;
+        border-radius: 12px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    @@media (max-width: 576px) {
+        .detail-item {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-value {
+            text-align: right;
+        }
+
+        .news-image {
+            height: 220px;
+        }
+    }
+</style>
+```

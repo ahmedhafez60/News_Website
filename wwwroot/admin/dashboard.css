@@ -1,0 +1,32 @@
+/* Admin dashboard — uses the tokens and fonts from style.css */
+body { background: #eef1f5; }
+.sidebar-wrap .offcanvas { background: var(--ink); color: #fff; }
+@media (min-width: 992px) {
+  .sidebar-wrap { width: 260px; flex: none; background: var(--ink); position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+}
+.side-brand { font-size: 1.5rem; color: #fff; text-decoration: none; padding: 1.25rem 1.5rem; display: block; }
+.side-brand i { color: var(--accent); }
+.side-label { font-size: .75rem; color: #7d8ca0; padding: 1rem 1.5rem .25rem; }
+.side-link { display: flex; align-items: center; gap: .75rem; padding: .7rem 1.5rem; color: #b9c4d1; text-decoration: none; border-inline-start: 3px solid transparent; transition: .25s; }
+.side-link:hover, .side-link.active { background: rgba(255,255,255,.07); color: #fff; border-inline-start-color: var(--accent); }
+.topbar { background: #fff; border-bottom: 1px solid var(--line); padding: .75rem 1.5rem; position: sticky; top: 0; z-index: 10; }
+.topbar .search { max-width: 340px; }
+.bell { position: relative; color: var(--ink); font-size: 1.3rem; }
+.bell .dot { position: absolute; top: -4px; inset-inline-start: -4px; width: 9px; height: 9px; background: var(--accent); border-radius: 50%; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem; display: flex; gap: 1rem; align-items: center; transition: .3s; height: 100%; }
+.stat:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(16,36,58,.12); }
+.stat .ico { width: 54px; height: 54px; border-radius: 12px; display: grid; place-items: center; font-size: 1.5rem; flex: none; }
+.stat .num { font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1.2; }
+.up { color: #198754; } .down { color: #dc3545; }
+.card-box { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem; height: 100%; }
+.card-box h5 { font-size: 1.05rem; }
+.thumb { width: 56px; height: 40px; object-fit: cover; border-radius: 4px; }
+.table > :not(caption) > * > * { vertical-align: middle; }
+.table tbody tr { transition: .2s; }
+.table tbody tr:hover { background: var(--paper); }
+.icon-btn { width: 32px; height: 32px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: #fff; transition: .2s; }
+.icon-btn:hover { background: var(--ink); color: #fff; }
+.icon-btn.danger:hover { background: var(--accent); }
+.cmt { display: flex; gap: .75rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }
+.cmt:last-child { border: 0; }
+.cmt img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex: none; }
